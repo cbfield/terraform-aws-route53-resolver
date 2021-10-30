@@ -46,6 +46,11 @@ output "outbound_endpoints" {
   value       = aws_route53_resolver_endpoint.outbound
 }
 
+output "region" {
+  description = "The region containing this resolver"
+  value       = data.aws_region.current
+}
+
 output "route_table" {
   description = "The route table used by the subnets containing the resolver endpoints"
   value       = aws_route_table.route_table
