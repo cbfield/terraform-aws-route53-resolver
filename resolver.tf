@@ -45,7 +45,7 @@ resource "aws_route53_resolver_rule" "rule" {
   dynamic "target_ip" {
     for_each = toset(data.aws_route53_resolver_endpoint.inbound.ip_addresses)
     content {
-      ip = each.key
+      ip = target_ip.key
     }
   }
 }
