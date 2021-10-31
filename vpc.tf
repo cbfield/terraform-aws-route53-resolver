@@ -23,34 +23,32 @@ resource "aws_network_acl" "nacl" {
   vpc_id     = aws_vpc.vpc.id
   subnet_ids = [for subnet in aws_subnet.subnet : subnet.id]
 
+  dynamic "ingress" {
+    for_each = toset(var.admitted_cidrs)
+
+    content {
+      action     = "allow"
+      cidr_block = ingress.key
+      from_port  = 53
+      protocol   = "udp"
+      rule_no    = 1 + index((sort(var.admitted_cidrs)), ingress.key)
+      to_port    = 53
+    }
+  }
+
+  egress {
+    action     = "allow"
+    cidr_block = "0.0.0.0/0"
+    from_port  = 53
+    protocol   = "udp"
+    rule_no    = 1
+    to_port    = 53
+  }
+
   tags = {
     "Managed By Terraform" = "true"
     "Name"                 = "${var.name}"
   }
-}
-
-resource "aws_network_acl_rule" "ingress" {
-  for_each = toset(var.admitted_cidrs)
-
-  network_acl_id = aws_network_acl.nacl.id
-  rule_number    = 100 + index(var.admitted_cidrs, each.key)
-  egress         = false
-  from_port      = 53
-  to_port        = 53
-  protocol       = "udp"
-  rule_action    = "allow"
-  cidr_block     = each.key
-}
-
-resource "aws_network_acl_rule" "egress" {
-  network_acl_id = aws_network_acl.nacl.id
-  rule_number    = 100
-  egress         = true
-  from_port      = 53
-  to_port        = 53
-  protocol       = "udp"
-  rule_action    = "allow"
-  cidr_block     = "0.0.0.0/0"
 }
 
 resource "aws_route_table" "route_table" {

@@ -28,14 +28,6 @@ output "nacl" {
   value       = aws_network_acl.nacl
 }
 
-output "nacl_rules" {
-  description = "Rules used by the network ACL that manages ingress and agress for the subnets containing the resolver endpoints"
-  value = {
-    ingress = aws_network_acl_rule.ingress
-    egress  = aws_network_acl_rule.egress
-  }
-}
-
 output "name" {
   description = "The value provided for var.name"
   value       = var.name
