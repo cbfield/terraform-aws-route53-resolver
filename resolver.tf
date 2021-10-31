@@ -13,6 +13,7 @@ resource "aws_route53_resolver_endpoint" "inbound" {
 
   tags = {
     "Managed By Terraform" = "true"
+    "Name"                 = "${var.name}-inbound"
   }
 }
 
@@ -31,6 +32,7 @@ resource "aws_route53_resolver_endpoint" "outbound" {
 
   tags = {
     "Managed By Terraform" = "true"
+    "Name"                 = "${var.name}-outbound"
   }
 }
 
@@ -47,5 +49,10 @@ resource "aws_route53_resolver_rule" "rule" {
     content {
       ip = target_ip.key
     }
+  }
+
+  tags = {
+    "Managed By Terraform" = "true"
+    "Name"                 = replace(each.key, ".", "-")
   }
 }
