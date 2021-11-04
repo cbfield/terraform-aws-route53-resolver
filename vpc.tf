@@ -7,6 +7,24 @@ resource "aws_vpc" "vpc" {
   }
 }
 
+resource "aws_vpc_dhcp_options" "dhcp_options" {
+  domain_name = data.aws_region.current.name == "us-east-1" ? (
+    "ec2.internal"
+  ) : "${data.aws_region.current.name}.compute.amazonaws.com"
+
+  domain_name_servers = ["AmazonProvidedDNS"]
+
+  tags = {
+    "Managed By Terraform" = "true"
+    "Name"                 = var.name
+  }
+}
+
+resource "aws_vpc_dhcp_options_association" "dhcp_options_association" {
+  vpc_id          = aws_vpc.vpc.id
+  dhcp_options_id = aws_vpc_dhcp_options.dhcp_options.id
+}
+
 resource "aws_subnet" "subnet" {
   for_each = toset(var.availability_zones)
 
