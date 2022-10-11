@@ -13,21 +13,19 @@ In order to use this to provision private DNS access to a VPC in another AWS acc
 
 When a forwarding rule for a given outbound and inbound endpoint is used, the request originates from the outbound endpoint and its destination is the inbound endpoint. Thus, it is not required to peer this DNS VPC with any VPC that you want to provision with access to DNS. It is sufficient to associate that VPC with the forwarding rule for the desired domain(s).
 
-# Terraform Docs
-
+<!-- BEGIN_TF_DOCS -->
 ## Requirements
 
-No requirements.
+| Name | Version |
+|------|---------|
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | ~>1.3 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~>3.6 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | n/a |
-
-## Modules
-
-No modules.
+| <a name="provider_aws"></a> [aws](#provider\_aws) | ~>3.6 |
 
 ## Resources
 
@@ -76,3 +74,4 @@ No modules.
 | <a name="output_security_group_rules"></a> [security\_group\_rules](#output\_security\_group\_rules) | Rules used by the security group associated with the resolver endpoints |
 | <a name="output_subnets"></a> [subnets](#output\_subnets) | The subnets containing the endpoints used by the resolver |
 | <a name="output_vpc"></a> [vpc](#output\_vpc) | The VPC that houses the endpoints for the resolver |
+<!-- END_TF_DOCS -->
